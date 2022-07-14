@@ -1,0 +1,23 @@
+syntax = "proto3";
+
+package image;
+
+import "google/api/annotations.proto";
+
+option go_package = "example.com/image";
+
+service Image {
+  rpc GetImage(GetImageRequest) returns (stream GetImageResponse) {
+    option (google.api.http) = {
+      get: "/images/{path}"
+    };
+  }
+}
+
+message GetImageRequest {
+  string path = 1;
+}
+
+message GetImageResponse {
+  bytes data = 1;
+}
