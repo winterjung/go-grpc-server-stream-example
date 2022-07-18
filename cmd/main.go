@@ -8,6 +8,7 @@ import (
 	"os"
 	"os/signal"
 	"syscall"
+	"time"
 
 	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
 	log "github.com/sirupsen/logrus"
@@ -103,7 +104,7 @@ func NewHTTPServer(ctx context.Context) (*http.Server, error) {
 
 	server := &http.Server{
 		Addr:    ":8081",
-		Handler: mux,
+		Handler: cors(mux),
 	}
 
 	return server, nil
@@ -137,4 +138,16 @@ func (s *imageServer) GetImage(req *pb.GetImageRequest, stream pb.Image_GetImage
 	}
 
 	return nil
+}
+
+func cors(h http.Handler) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Access-Control-Allow-Origin", "*")
+		w.Header().Set("Access-Control-Allow-Methods", "GET, POST, PATCH, DELETE")
+		w.Header().Set("Access-Control-Allow-Headers", "Accept, Content-Type, Content-Length, Accept-Encoding, Authorization, ResponseType")
+		if r.Method == "OPTIONS" {
+			return
+		}
+		h.ServeHTTP(w, r)
+	})
 }
