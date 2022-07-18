@@ -10,3 +10,9 @@ $ buf generate
 $ go run -v -race cmd/main.go
 $ curl http://localhost:8081/images/casper.png
 ```
+
+## refs
+
+- https://ops.tips/blog/sending-files-via-grpc/
+- https://dev.to/techschoolguru/upload-file-in-chunks-with-client-streaming-grpc-golang-4loc
+- https://dev.to/techschoolguru/implement-server-streaming-grpc-in-go-2d0p
